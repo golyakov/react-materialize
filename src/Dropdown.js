@@ -16,11 +16,12 @@ class Dropdown extends Component {
 
   componentDidMount() {
     const options = this.props.options || {};
-    $(this._trigger).dropdown(options);
+    this._instance = new M.Dropdown(this._trigger, options);
   }
 
   componentWillUnmount() {
-    $(this._trigger).off();
+    this._instance.close();
+    this._instance.destroy();
   }
 
   render() {

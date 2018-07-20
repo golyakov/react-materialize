@@ -15,10 +15,16 @@ class Button extends Component {
   componentDidMount() {
     const { tooltip, tooltipOptions } = this.props;
     if (
-      typeof $ !== 'undefined' &&
-      (typeof tooltip !== 'undefined' || typeof tooltipOptions !== 'undefined')
+      typeof tooltip !== 'undefined' ||
+      typeof tooltipOptions !== 'undefined'
     ) {
-      $(this._btnEl).tooltip(tooltipOptions);
+      this._tooltipInstance = new M.Tooltip(this._btnEl, tooltipOptions);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._tooltipInstance) {
+      this._tooltipInstance.destroy();
     }
   }
 

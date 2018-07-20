@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import SideNav from '../src/SideNav';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 function setup(props = {}, children, mounted) {
   const propsIn = {
@@ -27,10 +27,14 @@ function setup(props = {}, children, mounted) {
 
 describe('<SideNav />', () => {
   const sideNavMock = jest.fn();
-  const restore = mocker('sidenav', sideNavMock);
+  const restore = mocker('Sidenav', sideNavMock);
 
   afterAll(() => {
     restore();
+  });
+
+  afterEach(() => {
+    sideNavMock.mockClear();
   });
 
   test('renders', () => {
@@ -91,6 +95,6 @@ describe('<SideNav />', () => {
       edge: 'right'
     };
     mount(<SideNav trigger={<span>trigger</span>} options={options} />);
-    expect(sideNavMock).toHaveBeenCalledWith(options);
+    expect(sideNavMock).toHaveBeenCalledWith(expect.anything(), options);
   });
 });

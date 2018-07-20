@@ -1,14 +1,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Modal from '../src/Modal';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Modal />', () => {
   let wrapper;
-  const modalMock = jest.fn();
-  const restore = mocker('modal', modalMock);
+  const open = jest.fn();
+  const close = jest.fn();
+  const modalMock = jest.fn(() => ({ open, close }));
+  const restore = mocker('Modal', modalMock);
 
   afterAll(() => {
+    modalMock.unmock();
     restore();
   });
 
@@ -70,6 +73,7 @@ describe('<Modal />', () => {
 
   describe('controlled modal with `open` prop', () => {
     let testModal;
+
     beforeEach(() => {
       testModal = shallow(
         <Modal modalOptions={{ one: 1 }} open>
@@ -79,35 +83,36 @@ describe('<Modal />', () => {
     });
 
     afterEach(() => {
+      open.mockClear();
+      close.mockClear();
       modalMock.mockClear();
       document.body.removeChild(document.body.lastElementChild);
     });
 
     test('mounts opened', () => {
       // once in mount and twice in #showModal
-      expect(modalMock).toHaveBeenCalledTimes(3);
+      expect(open).toHaveBeenCalledTimes(1);
       expect(wrapper).toMatchSnapshot();
     });
 
     test('open on prop change', () => {
       testModal.setProps({ open: true });
-      expect(modalMock).toHaveBeenCalledTimes(3);
+      expect(open).toHaveBeenCalledTimes(1);
       // no trigger is defined, modal should be configured in constructor
-      expect(modalMock.mock.calls[0]).toEqual([{ one: 1 }]);
+      expect(modalMock.mock.calls[0]).toEqual(expect.anything(), [{ one: 1 }]);
       // showModal initializes the modal again
-      expect(modalMock.mock.calls[1]).toEqual([{ one: 1 }]);
-      expect(modalMock).toHaveBeenLastCalledWith('open');
+      expect(modalMock.mock.calls[1]).toEqual(undefined, [{ one: 1 }]);
     });
 
     test('closes on prop change', () => {
       testModal.setProps({ open: false });
-      expect(modalMock).toHaveBeenCalledTimes(4);
+      expect(close).toHaveBeenCalledTimes(1);
       // no trigger is defined, modal should be configured in constructor
-      expect(modalMock.mock.calls[0]).toEqual([{ one: 1 }]);
+      expect(modalMock.mock.calls[0]).toEqual(expect.anything(), [{ one: 1 }]);
       // open prop is set, so showModal is called
-      expect(modalMock.mock.calls[1]).toEqual([{ one: 1 }]);
-      expect(modalMock.mock.calls[2]).toEqual(['open']);
-      expect(modalMock).toHaveBeenLastCalledWith('close');
+      expect(modalMock.mock.calls[1]).toEqual(undefined, [{ one: 1 }]);
+      expect(open).toHaveBeenCalledTimes(1);
+      expect(close).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -121,6 +126,7 @@ describe('<Modal />', () => {
     });
 
     afterEach(() => {
+      open.mockClear();
       modalMock.mockClear();
       document.body.removeChild(document.body.lastElementChild);
     });
@@ -132,7 +138,8 @@ describe('<Modal />', () => {
 
     test('initializes with modalOptions', () => {
       wrapper.find('button').simulate('click');
-      expect(modalMock).toHaveBeenCalledWith(modalOptions);
+      expect(modalMock).toHaveBeenCalledWith(undefined, modalOptions);
+      expect(open).toHaveBeenCalledTimes(1);
     });
   });
 });

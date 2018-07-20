@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Dropdown from '../src/Dropdown';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Dropdown />', () => {
   let wrapper;
   const dropdownMock = jest.fn();
-  const restore = mocker('dropdown', dropdownMock);
+  const restore = mocker('Dropdown', dropdownMock);
 
   afterAll(() => {
     restore();
@@ -22,7 +22,7 @@ describe('<Dropdown />', () => {
     wrapper = shallow(
       <Dropdown trigger={<button>Drop me!</button>} options={options} />
     );
-    expect(dropdownMock).toHaveBeenCalledWith(options);
+    expect(dropdownMock).toHaveBeenCalledWith(undefined, options);
   });
 
   test('deletes unwatend props', () => {

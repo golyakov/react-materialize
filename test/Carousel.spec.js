@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Carousel from '../src/Carousel';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Carousel />', () => {
   let wrapper;
   const carouselMock = jest.fn();
-  const restore = mocker('carousel', carouselMock);
+  const restore = mocker('Carousel', carouselMock);
 
   afterAll(() => {
     restore();
@@ -57,12 +57,12 @@ describe('<Carousel />', () => {
       <Carousel images={images} options={{ fullWidth: true }} />
     );
     expect(wrapper).toMatchSnapshot();
-    expect(carouselMock).toHaveBeenCalledWith({ fullWidth: true });
+    expect(carouselMock).toHaveBeenCalledWith(undefined, { fullWidth: true });
   });
 
   test('more options', () => {
     const options = { padding: 12, fullWidth: true, indicators: false };
     wrapper = shallow(<Carousel images={images} options={options} />);
-    expect(carouselMock).toHaveBeenCalledWith(options);
+    expect(carouselMock).toHaveBeenCalledWith(undefined, options);
   });
 });

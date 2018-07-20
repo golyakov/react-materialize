@@ -69,7 +69,7 @@
     "husky": "^0.14.3",
     "jest": "^22.4.3",
     "jsdom": "^11.7.0",
-    "materialize-css": "^0.100.2",
+    "materialize-css": "^1.0.0-rc.2",
     "prettier": "^1.11.1",
     "webpack": "^1.13.1"
   },

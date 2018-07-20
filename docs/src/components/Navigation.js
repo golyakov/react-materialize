@@ -6,47 +6,66 @@ import CollapsibleItem from 'CollapsibleItem';
 import Search from './Search';
 import routes from '../routes';
 
-const isMobile = () => ($(window).width() < 993);
-const getPageTitle = () => window.location.hash.substring(2) || 'react materialize';
-const capitalize = path => path[0] ? path[0].toUpperCase() + path.substr(1) : '';
+const isMobile = () => window.innerWidth < 993;
+const getPageTitle = () =>
+  window.location.hash.substring(2) || 'react materialize';
+const capitalize = path =>
+  path[0] ? path[0].toUpperCase() + path.substr(1) : '';
 
 class Navigation extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = { title: '' };
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount () {
-    $('.button-collapse').sidenav({
+  componentDidMount() {
+    this._instance = new M.Sidenav(this._buttonCollapsible, {
       closeOnClick: isMobile,
       edge: 'left'
     });
   }
 
-  onChange (title) {
+  componentWillUnmount() {
+    if (this._instance) {
+      this._instance.destroy();
+    }
+  }
+
+  onChange(title) {
     this.setState({ title });
   }
 
-  render () {
+  render() {
     return (
       <header>
-        <div className='container'>
-          <a href='#' data-activates='nav-mobile' className='button-collapse top-nav full hide-on-large-only'>
-            <i className='material-icons'>menu</i>
+        <div className="container">
+          <a
+            href="#"
+            data-activates="nav-mobile"
+            className="button-collapse top-nav full hide-on-large-only"
+            ref={el => (this._buttonCollapsible = el)}
+          >
+            <i className="material-icons">menu</i>
           </a>
         </div>
-        <ul id='nav-mobile' className='side-nav fixed'>
-          <li className='logo'>
-            <NavLink to='/' className='brand-logo' title='React Materialize' id='logo-container'>
-              <img src='img/react-materialize-logo.svg' alt='React Materialize' />
+        <ul id="nav-mobile" className="side-nav fixed">
+          <li className="logo">
+            <NavLink
+              to="/"
+              className="brand-logo"
+              title="React Materialize"
+              id="logo-container"
+            >
+              <img
+                src="img/react-materialize-logo.svg"
+                alt="React Materialize"
+              />
             </NavLink>
           </li>
           <Search routes={routes} />
-          <li className='no-padding' >
-            <Collapsible>
-              {routes.map(renderNavItems)}
-            </Collapsible>
+          <li className="no-padding">
+            <Collapsible>{routes.map(renderNavItems)}</Collapsible>
           </li>
         </ul>
       </header>
@@ -54,30 +73,35 @@ class Navigation extends React.Component {
   }
 }
 
-const getActiveRoute = ({routes = []}) => {
+const getActiveRoute = ({ routes = [] }) => {
   const pageTitle = getPageTitle();
-  return routes.length &&
-    routes.filter(r => r.path.substr(1) === pageTitle);
+  return routes.length && routes.filter(r => r.path.substr(1) === pageTitle);
 };
 
 const renderNavItems = (navItem, idx) => {
   const expanded = !!getActiveRoute(navItem).length;
 
-  return (
-    navItem.component
-      ? <li key={`route${idx}`}>
-        <NavLink className='waves-effect waves-teal' to='/'>Getting started</NavLink>
-      </li>
-      : <CollapsibleItem expanded={expanded} key={`route${idx}`} header={navItem.path}>
-        <ul>{navItem.routes.map(renderSubNavItems)}</ul>
-      </CollapsibleItem>
+  return navItem.component ? (
+    <li key={`route${idx}`}>
+      <NavLink className="waves-effect waves-teal" to="/">
+        Getting started
+      </NavLink>
+    </li>
+  ) : (
+    <CollapsibleItem
+      expanded={expanded}
+      key={`route${idx}`}
+      header={navItem.path}
+    >
+      <ul>{navItem.routes.map(renderSubNavItems)}</ul>
+    </CollapsibleItem>
   );
 };
 
 /* eslint-disable react/prop-types */
 const renderSubNavItems = ({ path }) => (
   <li key={path}>
-    <NavLink to={path} className='waves-effect waves-teal'>
+    <NavLink to={path} className="waves-effect waves-teal">
       {capitalize(path.substr(1))}
     </NavLink>
   </li>

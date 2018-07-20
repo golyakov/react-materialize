@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Parallax from '../src/Parallax';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Parallax />', () => {
   let wrapper;
   const parallaxMock = jest.fn();
-  const restore = mocker('parallax', parallaxMock);
+  const restore = mocker('Parallax', parallaxMock);
 
   afterAll(() => {
     restore();

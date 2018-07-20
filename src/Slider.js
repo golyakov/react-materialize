@@ -6,7 +6,7 @@ class Slider extends Component {
   componentDidMount() {
     const { fullscreen, indicators, interval, transition } = this.props;
 
-    $('.slider').slider({
+    new M.Slider(this._sliderEl, {
       full_width: fullscreen,
       indicators,
       interval,
@@ -22,7 +22,7 @@ class Slider extends Component {
     };
 
     return (
-      <div className={cx(classes, className)}>
+      <div className={cx(classes, className)} ref={el => (this._sliderEl = el)}>
         <ul className="slides">{children}</ul>
       </div>
     );

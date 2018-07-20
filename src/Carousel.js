@@ -12,8 +12,12 @@ class Carousel extends React.Component {
   componentDidMount() {
     const { options = {} } = this.props;
 
-    if (typeof $ !== 'undefined') {
-      $(this._carousel).carousel(options);
+    this._instance = new M.Carousel(this._carousel, options);
+  }
+
+  componentWillUnmount() {
+    if (this._instance) {
+      this._instance.destroy();
     }
   }
 

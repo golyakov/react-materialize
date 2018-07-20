@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MediaBox from '../src/MediaBox';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<MediaBox />', () => {
   let wrapper;
   const materialboxMock = jest.fn();
-  const restore = mocker('materialbox', materialboxMock);
+  const restore = mocker('Materialbox', materialboxMock);
 
   afterAll(() => {
     restore();

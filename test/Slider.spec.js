@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Slider from '../src/Slider';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Slider />', () => {
   let wrapper;
   const sliderMock = jest.fn();
-  const restore = mocker('slider', sliderMock);
+  const restore = mocker('Slider', sliderMock);
 
   afterAll(() => {
     restore();

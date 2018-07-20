@@ -23,7 +23,7 @@ class Modal extends Component {
     const { trigger, modalOptions, open } = this.props;
 
     if (!trigger) {
-      $(`#${this.modalID}`).modal(modalOptions);
+      this._instance = new M.Modal(this._modalEl, modalOptions);
     }
 
     if (open) this.showModal();
@@ -69,7 +69,12 @@ class Modal extends Component {
 
     return this.modalRoot
       ? ReactDOM.createPortal(
-          <div {...other} className={classes} id={this.modalID}>
+          <div
+            {...other}
+            className={classes}
+            id={this.modalID}
+            ref={el => (this._modalEl = el)}
+          >
             <div className="modal-content">
               <h4>{header}</h4>
               {children}
@@ -86,13 +91,18 @@ class Modal extends Component {
   showModal(e) {
     if (e) e.preventDefault();
     const { modalOptions = {} } = this.props;
-    $(`#${this.modalID}`).modal(modalOptions);
-    $(`#${this.modalID}`).modal('open');
+    if (!this._instance) {
+      this._instance = new M.Modal(this._modalEl, modalOptions);
+    }
+    this._instance.open();
   }
 
   hideModal(e) {
     if (e) e.preventDefault();
-    $(`#${this.modalID}`).modal('close');
+    if (!this._instance) {
+      this._instance = new M.Modal(this._modalEl, modalOptions);
+    }
+    this._instance.close();
   }
 
   render() {

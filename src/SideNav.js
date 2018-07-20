@@ -10,8 +10,8 @@ class SideNav extends Component {
   }
 
   componentDidMount() {
-    const { options = {} } = this.props;
-    $('.sidenav').sidenav(options);
+    const { options } = this.props;
+    new M.Sidenav(this._sidenavEl, options);
   }
 
   render() {
@@ -27,7 +27,12 @@ class SideNav extends Component {
     return (
       <div>
         {this.renderTrigger()}
-        <ul id={this.id} className={classNames} {...props}>
+        <ul
+          id={this.id}
+          className={classNames}
+          ref={el => (this._sidenavEl = el)}
+          {...props}
+        >
           {children}
         </ul>
       </div>

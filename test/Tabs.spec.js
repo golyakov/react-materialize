@@ -2,12 +2,12 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Tabs from '../src/Tabs';
 import Tab from '../src/Tab';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('Tabs', () => {
   let wrapper;
   const tabsMock = jest.fn();
-  const restore = mocker('tabs', tabsMock);
+  const restore = mocker('Tabs', tabsMock);
 
   const options = {
     onShow: jest.fn(),
@@ -41,7 +41,7 @@ describe('Tabs', () => {
     });
 
     test('initializes Tabs with options', () => {
-      expect(tabsMock).toHaveBeenCalledWith(options);
+      expect(tabsMock).toHaveBeenCalledWith(expect.anything(), options);
     });
   });
 

@@ -2,12 +2,12 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Collapsible from '../src/Collapsible';
 import CollapsibleItem from '../src/CollapsibleItem';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Collapsible />', () => {
   let wrapper;
   const collapsibleMock = jest.fn();
-  const restore = mocker('collapsible', collapsibleMock);
+  const restore = mocker('Collapsible', collapsibleMock);
 
   afterAll(() => {
     restore();

@@ -21,22 +21,28 @@ class Input extends Component {
 
   componentDidMount() {
     if (this.isMaterialSelect()) {
-      $(this.selectInput).material_select();
-      $(this.selectInput).on('change', this._onChange);
+      this._instance = new M.FormSelect(this.selectInput);
+      if (this.selectInput) {
+        this.selectInput.addEventListener('change', this._onChange);
+      }
     }
     if (this.isDatePicker) {
-      $(this.dateInput).pickadate(this.props.options);
-      $(this.dateInput).on('change', this._onChange);
+      this._instance = new M.Datepicker(this.dateInput, this.props.options);
+      if (this.dateInput) {
+        this.dateInput.addEventListener('change', this._onChange);
+      }
     }
     if (this.isTimePicker) {
-      $(this.timeInput).pickatime(this.props.options);
-      $(this.timeInput).on('change', this._onChange);
+      this._instance = new M.Timepicker(this.timeInput, this.props.options);
+      if (this.timeInput) {
+        this.timeInput.addEventListener('change', this._onChange);
+      }
     }
   }
 
   componentDidUpdate() {
     if (this.isMaterialSelect() && !this.props.multiple) {
-      $(this.selectInput).material_select();
+      this._instance = new M.FormSelect(this.selectInput);
     }
   }
 
@@ -46,15 +52,16 @@ class Input extends Component {
         {
           value: nextProps.defaultValue
         },
-        () => $(this.selectInput).material_select()
+        () => (this._instance = new M.FormSelect(this.selectInput))
       );
     }
   }
 
   componentWillUnmount() {
     if (this.isMaterialSelect()) {
-      $(this.selectInput).off('change', this._onChange);
+      this.selectInput.removeEventListener('change', this._onChange);
     }
+    this._instance.destroy();
   }
 
   getMultipleValues({ options }) {

@@ -11,9 +11,9 @@ class Navbar extends Component {
   }
 
   componentDidMount() {
-    if (typeof $ !== 'undefined') {
-      $('.button-collapse').sideNav(this.props.options);
-    }
+    const { options = {} } = this.props;
+
+    new M.Navbar(this._navbarEl, options);
   }
 
   renderSideNav() {
@@ -48,7 +48,12 @@ class Navbar extends Component {
             </a>
             <ul className={cx(className, classes)}>{this.props.children}</ul>
             {this.renderSideNav()}
-            <a className="button-collapse" href="#" data-activates="nav-mobile">
+            <a
+              className="button-collapse"
+              href="#"
+              data-activates="nav-mobile"
+              ref={el => (this._navbarEl = el)}
+            >
               <Icon>view_headline</Icon>
             </a>
           </Col>

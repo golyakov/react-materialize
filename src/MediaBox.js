@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 class MediaBox extends Component {
   componentDidMount() {
-    $('.materialboxed').materialbox();
+    new M.Materialbox(this._materialboxEl);
   }
 
   render() {
@@ -15,6 +15,9 @@ class MediaBox extends Component {
         className={cx('materialboxed', className)}
         data-caption={caption}
         src={src}
+        ref={el => {
+          this._materialboxEl = el;
+        }}
         {...props}
       />
     );

@@ -4,14 +4,14 @@ import cx from 'classnames';
 
 class Parallax extends Component {
   componentDidMount() {
-    $('.parallax').parallax();
+    new M.Parallax(this._parallaxEl);
   }
 
   render() {
     const { className, imageSrc } = this.props;
     return (
       <div className={cx('parallax-container', className)}>
-        <div className="parallax">
+        <div className="parallax" ref={el => (this._parallaxEl = el)}>
           <img src={imageSrc} />
         </div>
       </div>

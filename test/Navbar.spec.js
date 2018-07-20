@@ -2,12 +2,12 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Navbar from '../src/Navbar';
 import NavItem from '../src/NavItem';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Navbar />', () => {
   let wrapper;
   const sideNavMock = jest.fn();
-  const restore = mocker('sideNav', sideNavMock);
+  const restore = mocker('Navbar', sideNavMock);
 
   afterAll(() => {
     restore();

@@ -10,9 +10,11 @@ class Tabs extends Component {
   componentDidMount() {
     const { tabOptions = {} } = this.props;
 
-    if (typeof $ !== 'undefined') {
-      $(this._tabsEl).tabs(tabOptions);
-    }
+    this._instance = new M.Tabs(this._tabsEl, tabOptions);
+  }
+
+  componentWillUnmount() {
+    this._instance.destroy();
   }
 
   _onSelect(idx, e) {
@@ -24,9 +26,7 @@ class Tabs extends Component {
   componentWillReceiveProps(nextProps) {
     const { tabOptions = {} } = nextProps;
 
-    if (typeof $ !== 'undefined') {
-      $(this._tabsEl).tabs(tabOptions);
-    }
+    this._instance = new M.Tabs(this._tabsEl, tabOptions);
   }
 
   render() {

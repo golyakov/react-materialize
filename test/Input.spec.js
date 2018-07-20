@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Input from '../src/Input';
 import Icon from '../src/Icon';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('<Input />', () => {
   let wrapper;
@@ -10,9 +10,9 @@ describe('<Input />', () => {
   const pickatimeMock = jest.fn();
   const selectMock = jest.fn();
 
-  const pickadateRestore = mocker('pickadate', pickadateMock);
-  const pickatimeRestore = mocker('pickatime', pickatimeMock);
-  const selectRestore = mocker('material_select', selectMock);
+  const pickadateRestore = mocker('Datepicker', pickadateMock);
+  const pickatimeRestore = mocker('Timepicker', pickatimeMock);
+  const selectRestore = mocker('FormSelect', selectMock);
 
   afterAll(() => {
     pickadateRestore();
@@ -166,7 +166,7 @@ describe('<Input />', () => {
     const options = { one: 'two' };
     wrapper = shallow(<Input type="date" options={options} />);
 
-    expect(pickadateMock).toHaveBeenCalledWith(options);
+    expect(pickadateMock).toHaveBeenCalledWith(undefined, options);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -183,7 +183,7 @@ describe('<Input />', () => {
     const options = { one: 'two' };
     wrapper = mount(<Input type="time" options={options} />);
 
-    expect(pickatimeMock).toHaveBeenCalledWith(options);
+    expect(pickatimeMock).toHaveBeenCalledWith(expect.anything(), options);
     expect(wrapper).toMatchSnapshot();
   });
 });

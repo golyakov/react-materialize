@@ -8,7 +8,7 @@ const capitalize = path => path[0].toUpperCase() + path.substr(1);
 const MIN_INPUT_LENGTH = 2;
 
 class Search extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       results: [],
@@ -23,26 +23,31 @@ class Search extends React.Component {
     this.routes = this.parseRoutes();
   }
 
-  handleFocus () {
+  handleFocus() {
     this.setState({ focused: true });
   }
 
-  handleBlur () {
+  handleBlur() {
     this.setState({ focused: false });
   }
 
-  handleClicked () {
+  handleClicked() {
     this.closeSideNav();
-    this.setState({results: []});
+    this.setState({ results: [] });
     const { search } = this.refs;
     search.value = '';
   }
 
-  closeSideNav () {
-    $('.button-collapse').sideNav('hide');
+  closeSideNav() {
+    document.querySelectorAll('.button-collapse').forEach(element => {
+      const instance = M.Sidenav.getInstance(element);
+      if (instance) {
+        instance.close();
+      }
+    });
   }
 
-  search () {
+  search() {
     const keys = this.routes;
     const { search } = this.refs;
     if (search.value.length < MIN_INPUT_LENGTH) return;
@@ -58,15 +63,15 @@ class Search extends React.Component {
     }
   }
 
-  parseRoutes () {
+  parseRoutes() {
     const { routes } = this.props;
 
     let ret = [];
     routes
       .filter(b => b.routes)
       .map(a => a.routes)
-      .map((c) => {
-        c.map((d) => {
+      .map(c => {
+        c.map(d => {
           ret.push({
             path: d.path.substr(1),
             component: d.component
@@ -77,25 +82,31 @@ class Search extends React.Component {
     return ret;
   }
 
-  render () {
+  render() {
     let classes = {
       'search-wrapper': true,
       card: true
     };
     classes.focused = this.state.focused;
     return (
-      <li className='search'>
+      <li className="search">
         <div className={cx(classes)}>
-          <input id='search'
-            ref='search'
-            placeholder='Search'
+          <input
+            id="search"
+            ref="search"
+            placeholder="Search"
             onChange={this.search}
             onFocus={this.handleFocus}
-            onBlur={this.handleBlur} />
+            onBlur={this.handleBlur}
+          />
           <Icon>search</Icon>
-          <div className='search-results'>
+          <div className="search-results">
             {this.state.results.map(({ path, component }) => {
-              return <Link to={`/${path}`} onClick={this.handleClicked} key={path}>{capitalize(path)}</Link>;
+              return (
+                <Link to={`/${path}`} onClick={this.handleClicked} key={path}>
+                  {capitalize(path)}
+                </Link>
+              );
             })}
           </div>
         </div>

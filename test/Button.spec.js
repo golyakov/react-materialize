@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Button from '../src/Button';
-import mocker from './helper/mocker';
+import mocker from './helper/new-mocker';
 
 describe('Button', () => {
   let wrapper;
@@ -76,7 +76,7 @@ describe('Button', () => {
     };
 
     const tooltipMock = jest.fn();
-    mocker('tooltip', tooltipMock);
+    mocker('Tooltip', tooltipMock);
     wrapper = shallow(<Button tooltip={tooltip}>Stuff</Button>);
     test('initializes Button with tooltip', () => {
       expect(tooltipMock).toHaveBeenCalled();
@@ -84,7 +84,7 @@ describe('Button', () => {
 
     wrapper = shallow(<Button tooltipOptions={tooltipOptions}>Stuff</Button>);
     test('initializes Button with tooltip options', () => {
-      expect(tooltipMock).toHaveBeenCalledWith(tooltipOptions);
+      expect(tooltipMock).toHaveBeenCalledWith(undefined, tooltipOptions);
     });
   });
 });

@@ -15,7 +15,13 @@ class Collapsible extends Component {
   }
 
   componentDidMount() {
-    $(this._collapsible).collapsible();
+    this._instance = new M.Collapsible(this._collapsible);
+  }
+
+  componentWillUnmount() {
+    if (this._instance) {
+      this._instance.destroy();
+    }
   }
 
   render() {
